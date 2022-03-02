@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_getx/home_page.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_it/get_it.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
-GetIt getIt = GetIt.instance;
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
