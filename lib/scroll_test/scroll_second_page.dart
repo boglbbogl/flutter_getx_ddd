@@ -25,82 +25,63 @@ class ScrollSecondPage extends StatelessWidget {
                 },
               ),
             ),
-            body: Platform.isIOS
-                ? SmartRefresher(
-                    primary: false,
-                    enablePullDown: true,
-                    enablePullUp: Platform.isIOS,
-                    onRefresh: () {
-                      print('sdfasdf');
-                      x.refreshController.refreshCompleted();
-                    },
-                    onLoading: () {
-                      x.addItem();
-                      x.refreshController.loadComplete();
-                    },
-                    controller: x.refreshController,
-                    scrollController: x.scrollController,
-                    child: Container())
-                : CustomScrollView(
-                    controller: x.scrollController,
-                    physics: AlwaysScrollableScrollPhysics(
-                      parent: BouncingScrollPhysics(),
+            body: SmartRefresher(
+              primary: false,
+              enablePullDown: !Platform.isIOS || !Platform.isMacOS,
+              enablePullUp: true,
+              onRefresh: () {
+                print('sdfasdf');
+                x.refreshController.refreshCompleted();
+              },
+              onLoading: () {
+                x.addItem();
+                x.refreshController.loadComplete();
+              },
+              controller: x.refreshController,
+              scrollController: x.scrollController,
+              child: CustomScrollView(
+                physics: AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                slivers: [
+                  if (!Platform.isIOS) ...[
+                    CupertinoSliverRefreshControl(
+                      refreshTriggerPullDistance: 100.0,
+                      refreshIndicatorExtent: 30.0,
+                      onRefresh: () async {
+                        print('dasf');
+                      },
                     ),
-                    slivers: [
-                      if (!Platform.isIOS) ...[
-                        CupertinoSliverRefreshControl(
-                          refreshTriggerPullDistance: 100.0,
-                          refreshIndicatorExtent: 30.0,
-                          onRefresh: () async {
-                            print('dasf');
-                          },
-                        ),
-                      ],
-                      SliverToBoxAdapter(
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children: [
-                              ...x.intList.map((e) => Text(e.toString()))
-                            ],
-                          ),
-                        ),
+                  ],
+                  SliverToBoxAdapter(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        children: [...x.intList.map((e) => Text(e.toString()))],
                       ),
-                      SliverList(
-                        delegate: SliverChildListDelegate([
-                          ...x.intList.map(
-                            (e) => Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Center(
-                                child: Text(
-                                  e.toString(),
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                              ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      ...x.intList.map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Center(
+                            child: Text(
+                              e.toString(),
+                              style: TextStyle(fontSize: 30),
                             ),
                           ),
-                        ]),
-
-                        // delegate: SliverChildBuilderDelegate(
-                        //   (context, index) {
-                        //     return Center(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.all(20.0),
-                        //         child: Text(
-                        //           x.intList[index].toString(),
-                        //           style: TextStyle(fontSize: 30),
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        //   childCount: x.intList.length,
-                        // ),
+                        ),
                       ),
-                    ],
+                    ]),
                   ),
+                ],
+              ),
+            ),
           );
         });
   }
