@@ -29,7 +29,7 @@ class ScrollTestController extends GetxController {
         isVisibie = false;
         update();
       }
-      print(scrollController.offset);
+      // print(scrollController.offset);
     });
     super.onInit();
   }
